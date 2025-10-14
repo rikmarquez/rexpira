@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(npm create:*)",
+      "Bash(robocopy:*)",
+      "Bash(xcopy:*)",
+      "Bash(dir:*)",
+      "Bash(copy rexpira-temppackage.json .)",
+      "Bash(copy:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm run dev)",
+      "Bash(if exist \"node_modules\\.vite\" rmdir /s /q \"node_modules\\.vite\")",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
