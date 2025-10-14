@@ -27,7 +27,7 @@ export function GeometricVisualization({
   technique,
   currentPhaseIndex,
 }: GeometricVisualizationProps) {
-  const { particleSize, trailLength, lineOpacity } = VISUALIZATION_CONFIG.geometric;
+  const { particleSize, lineOpacity } = VISUALIZATION_CONFIG.geometric;
   const centerX = 0;
   const centerY = 0;
   const size = 200;

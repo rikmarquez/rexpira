@@ -44,7 +44,6 @@ export function useBreathingCycle(
 
   // Fase actual
   const currentPhase = technique.phases[currentPhaseIndex]?.type || 'inhale';
-  const currentPhaseDuration = technique.phases[currentPhaseIndex]?.duration || 4;
 
   const start = useCallback(() => {
     setIsActive(true);

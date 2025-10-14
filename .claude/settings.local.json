@@ -15,7 +15,11 @@
       "Bash(if exist \"node_modules\\.vite\" rmdir /s /q \"node_modules\\.vite\")",
       "Bash(netstat:*)",
       "Bash(findstr:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Implement Rexpira meditation app with 4 visualizations\n\n- Add complete meditation app with breathing techniques\n- Implement 4 visualizations: Circle, Geometric, Wave, and Lotus\n- Add breathing cycle system with 6 preset techniques (4-7-8, Box, 5-5, Fire, 4-4-6-2, Custom)\n- Configure Tailwind CSS 4.x with @tailwindcss/postcss\n- Add countdown timer with real-time phase tracking\n- Implement pause/resume/stop controls\n- Add visualization selector in configuration screen\n- Create project documentation in /docs folder\n- Set up TypeScript + React + Vite + Framer Motion\n- Design mobile-first responsive UI\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(npm run build)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
