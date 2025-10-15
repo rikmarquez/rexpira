@@ -56,7 +56,7 @@ export const BREATHING_TECHNIQUES: BreathingTechnique[] = [
 
 // Esquema de colores por fase
 export const COLOR_SCHEME: ColorScheme = {
-  inhale: { from: '#3B82F6', to: '#06B6D4' }, // azul a turquesa
+  inhale: { from: '#10B981', to: '#34D399' }, // verde a verde claro
   hold: { from: '#F59E0B', to: '#FBBF24' }, // ámbar a amarillo
   exhale: { from: '#06B6D4', to: '#8B5CF6' }, // turquesa a morado
   holdEmpty: '#1E3A8A', // azul oscuro

@@ -95,6 +95,196 @@
 
 ---
 
+## Sesión: 2025-10-14 (Sesión de Implementación Completa)
+
+### ✅ Problemas Resueltos
+
+#### Problema 1: Error de Tailwind CSS 4.x con PostCSS
+
+**Contexto:** Al iniciar el proyecto con Vite, Tailwind CSS 4.x lanzaba error porque el plugin de PostCSS había cambiado de ubicación.
+
+**Error encontrado:**
+```
+[plugin:vite:css] [postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin.
+The PostCSS plugin has moved to a separate package...
+```
+
+**Solución aplicada:**
+1. Instalé `@tailwindcss/postcss` con `npm install @tailwindcss/postcss`
+2. Actualicé `postcss.config.js` para usar `'@tailwindcss/postcss': {}` en lugar de `tailwindcss: {}`
+3. Actualicé `src/index.css` para usar la nueva sintaxis:
+   - Reemplacé `@tailwind base/components/utilities` por `@import "tailwindcss";`
+   - Agregué `@theme { ... }` para definir colores personalizados
+4. Desactivé `verbatimModuleSyntax` en `tsconfig.app.json`
+
+**Código relevante:**
+```typescript
+// postcss.config.js
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+    autoprefixer: {},
+  },
+}
+
+// src/index.css
+@import "tailwindcss";
+
+@theme {
+  --color-breath-blue: #3B82F6;
+  --color-breath-turquoise: #06B6D4;
+  // ... más colores
+}
+```
+
+**Aprendizaje:** Tailwind CSS 4.x tiene una arquitectura completamente nueva que requiere `@tailwindcss/postcss` y usa `@import` + `@theme` en lugar de directivas `@tailwind`.
+
+---
+
+#### Problema 2: Importaciones con TypeScript Strict Mode
+
+**Contexto:** Las importaciones inicialmente causaban conflictos con `verbatimModuleSyntax: true` en tsconfig.
+
+**Error encontrado:**
+```
+The requested module '/src/types/breathing.ts' does not provide an export named 'PhaseType'
+```
+
+**Solución aplicada:**
+Desactivé `verbatimModuleSyntax` en `tsconfig.app.json` cambiando el valor a `false`, lo que permitió que las importaciones funcionaran correctamente sin necesidad de agregar extensiones `.ts`.
+
+**Aprendizaje:** `verbatimModuleSyntax: true` en TypeScript puede causar problemas con bundlers modernos como Vite. Es mejor desactivarlo para proyectos con Vite.
+
+---
+
+#### Problema 3: Cuenta Regresiva No Funcionaba
+
+**Contexto:** El temporizador mostraba siempre el mismo número en lugar de hacer cuenta regresiva.
+
+**Error encontrado:**
+En `useBreathingCycle.ts` línea 166, se estaba retornando `currentPhaseDuration` (constante) en lugar de `phaseTimeRemaining` (estado que se actualiza).
+
+**Solución aplicada:**
+```typescript
+// Antes (incorrecto)
+return {
+  // ...
+  phaseTimeRemaining: currentPhaseDuration, // ❌
+}
+
+// Después (correcto)
+return {
+  // ...
+  phaseTimeRemaining, // ✅
+}
+```
+
+**Aprendizaje:** Siempre verificar que se retorne el estado actualizable y no la constante inicial.
+
+---
+
+#### Problema 4: Variables No Usadas en Build de Producción
+
+**Contexto:** Al hacer deploy en Railway, el build fallaba porque TypeScript en modo estricto detectaba variables declaradas pero no usadas.
+
+**Error encontrado:**
+```
+src/components/visualizations/GeometricVisualization.tsx(30,25): error TS6133: 'trailLength' is declared but its value is never read.
+src/hooks/useBreathingCycle.ts(47,9): error TS6133: 'currentPhaseDuration' is declared but its value is never read.
+```
+
+**Solución aplicada:**
+1. Eliminé `trailLength` de la desestructuración en `GeometricVisualization.tsx`
+2. Eliminé la variable `currentPhaseDuration` que ya no se usaba en `useBreathingCycle.ts`
+
+**Aprendizaje:** En proyectos con TypeScript estricto, siempre eliminar variables no usadas antes de hacer el build de producción.
+
+---
+
+### 💡 Mejores Prácticas Descubiertas
+
+- **Framer Motion para animaciones complejas:** Framer Motion es excelente para animaciones de React, pero para SVG animados es mejor combinar con animación CSS nativa
+- **Hook personalizado para lógica compleja:** `useBreathingCycle` encapsula toda la lógica del ciclo de respiración, haciendo el código más mantenible
+- **Visualizaciones adaptativas:** La visualización geométrica calcula automáticamente la forma según el número de fases de la técnica seleccionada
+- **Estado mínimo:** Solo guardar en estado lo estrictamente necesario y calcular el resto dinámicamente
+- **Controles superiores:** Los botones de control arriba mejoran la UX en móvil y evitan toques accidentales
+
+### 🎨 Decisiones de Diseño
+
+- **Paleta por fase:** Cada fase de respiración tiene su propio esquema de colores para guiar visualmente al usuario
+- **Animaciones suaves:** Uso de `easeInOutSine` para transiciones naturales que imitan la respiración real
+- **Información central:** Contador y ciclos siempre visibles en todas las visualizaciones
+- **Mobile-first:** Diseño optimizado primero para móvil, luego adaptado a desktop
+
+### 🚀 Estado Actual (Fin de Sesión)
+
+**Proyecto:** MVP Completado al 100%
+- ✅ 4 visualizaciones funcionando
+- ✅ 6 técnicas de respiración
+- ✅ Sistema de temporizador con cuenta regresiva
+- ✅ Controles funcionales (pausa, reanudar, detener)
+- ✅ Build optimizado para producción
+- ✅ Listo para deploy en Railway
+
+**Siguiente sesión:** Implementar mejoras opcionales (sonidos, PWA, i18n, modo claro)
+
+---
+
+## Sesión: 2025-10-15 (Configuración del Protocolo de Documentación)
+
+### ✅ Tareas Realizadas
+
+#### Tarea 1: Creación del Archivo `claude.md`
+
+**Contexto:** Para garantizar continuidad entre sesiones de Claude Code, se necesitaba establecer un protocolo claro de documentación que se leyera automáticamente al inicio de cada sesión.
+
+**Solución aplicada:**
+1. Creación de `claude.md` en la raíz del proyecto
+2. Documentación del protocolo de lectura al inicio de sesión (leer 3 archivos de `/docs`)
+3. Documentación del protocolo de actualización al final de sesión
+4. Inclusión de reglas importantes del proyecto
+5. Plantillas para actualizar `session-learnings.md`
+
+**Archivo creado:**
+```
+/claude.md (raíz del proyecto)
+```
+
+**Aprendizaje:** `claude.md` es un archivo especial que Claude Code lee automáticamente al iniciar cada sesión si está presente en la raíz del proyecto. Es el lugar ideal para establecer protocolos y convenciones del proyecto.
+
+**Archivos actualizados:**
+- `/docs/project-status.md` - Agregada funcionalidad completada: "Protocolo de documentación con `claude.md`"
+- `/docs/session-learnings.md` - Agregada sesión 2025-10-15
+
+---
+
+### 💡 Mejores Prácticas Descubiertas
+
+- **claude.md como fuente de verdad:** Usar `claude.md` en la raíz garantiza que cada sesión nueva siga el mismo protocolo sin necesidad de recordatorios manuales
+- **Documentación tripartita:** Separar la documentación en tres archivos (`project-status.md`, `technical-specs.md`, `session-learnings.md`) mantiene la información organizada y fácil de actualizar
+- **Protocolo de inicio/fin de sesión:** Establecer rutinas claras de lectura al inicio y actualización al final asegura continuidad perfecta
+
+### 🔍 Ventajas del Sistema Implementado
+
+1. **Continuidad automática:** Cada nueva sesión de Claude Code lee automáticamente el contexto completo
+2. **Historial de problemas:** `session-learnings.md` funciona como base de conocimiento de soluciones
+3. **Estado actualizado:** `project-status.md` siempre refleja el estado real del proyecto
+4. **Especificaciones centralizadas:** `technical-specs.md` mantiene convenciones y arquitectura en un solo lugar
+
+### 🚀 Estado Actual (Fin de Sesión)
+
+**Proyecto:** Sistema de documentación completado y funcional
+
+**Archivos del sistema de documentación:**
+- ✅ `/claude.md` - Protocolo de sesión (lectura automática)
+- ✅ `/docs/project-status.md` - Estado del proyecto
+- ✅ `/docs/technical-specs.md` - Especificaciones técnicas
+- ✅ `/docs/session-learnings.md` - Problemas resueltos y aprendizajes
+
+**Siguiente sesión:** El sistema de documentación estará completamente operativo. Claude Code leerá automáticamente `claude.md` y los archivos de `/docs` al inicio.
+
+---
+
 ## Plantilla para Futuras Sesiones
 
 ### Sesión: [FECHA]

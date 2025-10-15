@@ -141,7 +141,7 @@ function App() {
           // Pantalla de meditación activa
           <div className="relative">
             {/* Controles superiores */}
-            <div className="flex justify-center gap-4 mb-8">
+            <div className="flex justify-center gap-4 mb-6">
               {!breathing.isPaused ? (
                 <button
                   className="bg-breath-amber hover:bg-breath-yellow text-white font-semibold px-8 py-3 rounded-lg transition-colors flex items-center gap-2"
@@ -167,6 +167,13 @@ function App() {
                 <Square size={20} />
                 Detener
               </button>
+            </div>
+
+            {/* Instrucción de fase */}
+            <div className="text-center mb-8">
+              <p className="text-3xl font-semibold text-white">
+                {currentPhaseInstruction}
+              </p>
             </div>
 
             {/* Visualización */}
@@ -209,13 +216,6 @@ function App() {
                   phaseTimeRemaining={breathing.phaseTimeRemaining}
                 />
               )}
-            </div>
-
-            {/* Instrucción de fase */}
-            <div className="text-center mt-8">
-              <p className="text-3xl font-semibold text-white">
-                {currentPhaseInstruction}
-              </p>
             </div>
           </div>
         )}
